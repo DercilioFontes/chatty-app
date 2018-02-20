@@ -1,5 +1,6 @@
 {
   "parserOptions": {
+    "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
@@ -18,7 +19,7 @@
     "react/react-in-jsx-scope": 2
   },
   "plugins": [
-    "react"
+    "react" 
   ],
   "extends": ["eslint:recommended", "plugin:react/recommended"]
 }
