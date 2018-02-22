@@ -10,7 +10,8 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: []
+      messages: [],
+      numberUsersConnected: ''
     }
     this.oldUserName = this.state.currentUser.name;
     this.changeUserName = this.changeUserName.bind(this);
@@ -61,8 +62,16 @@ class App extends Component {
     this.socket.onmessage = (event) => {
       const newMessageObj = JSON.parse(event.data);
 
-      ////// THIS SWITCH DOES NOTHING YET!!! /////
-      switch(newMessageObj.type){ /////////////
+      switch(newMessageObj.type){ 
+        case 'numberUsersConnectedNotification':
+          // Push a new message from socket server about current user jointing or leaving the channel
+          newMessageObj.type = 'incomingNotification';
+          messages.push(newMessageObj);
+          this.setState({
+            messages: messages,
+            numberUsersConnected: newMessageObj.numberUsersConnected
+          });
+          break;
         case 'incomingMessage':
         messages.push(newMessageObj);
           this.setState({
@@ -85,7 +94,7 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <NavBar />
+        <NavBar numberUsersConnected={this.state.numberUsersConnected}/>
         <MessageList messages={this.state.messages}/>
         <ChatBar username={this.state.currentUser.name} 
         onUserNameChange={ this.changeUserName }
