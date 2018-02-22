@@ -22,13 +22,14 @@ class ChatBar extends Component {
   render() {
 
     const { messageText } = this.state;
-    const { onUserNameChange, username } = this.props;
+    const { onUserNameChange, onUserNamePressEnter, username } = this.props;
 
     return (
       <footer className="chatbar">
         <input className="chatbar-username" 
         defaultValue={ username } 
-        onChange={ e => onUserNameChange(e.target.value) }/>
+        onChange={ e => onUserNameChange(e.target.value) }
+        onKeyPress={ e => onUserNamePressEnter(e) }/>
         <input className="chatbar-message" 
           placeholder="Type a message and hit ENTER" 
           value={ messageText }

@@ -30,11 +30,19 @@ function broadcast(data) {
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
-  // Get message from client, set UUID and save to array "messages"
+  // Get message or notification from client, set UUID and broadcast it
   ws.on('message', (message) => {
     const msgObj = JSON.parse(message);
-    const newMsg = {id: uuidv1(), username: msgObj.username, content:  msgObj.content}
-    broadcast(JSON.stringify(newMsg));
+    let newMsg = '';
+    switch (msgObj.type) {
+      case 'postNotification':
+        newMsg = {id: uuidv1(), type: 'incomingNotification', username: 'System', content:  `${msgObj.oldUserName} changed their name to ${msgObj.newUserName}`}
+        broadcast(JSON.stringify(newMsg));
+        break;
+      default:
+        newMsg = {id: uuidv1(), type: 'incomingMessage', username: msgObj.username, content:  msgObj.content}
+        broadcast(JSON.stringify(newMsg));
+      }
   });
 
   ws.on('error', () => {});

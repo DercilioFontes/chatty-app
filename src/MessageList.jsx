@@ -9,6 +9,7 @@ class MessageList extends Component {
       return (
         <Message 
           key={message.id}
+          type={message.type}
           username={message.username}
           content={message.content}
         />
