@@ -12,9 +12,14 @@ class App extends Component {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: []
     }
+    this.changeUserName = this.changeUserName.bind(this);
   }
 
-  // Get and add new message from the Chart Bar
+  changeUserName(name) {
+    this.setState({currentUser: { name }});
+  }
+
+  // Get new message from the Chart Bar and send to the Socket Server
   addNewMessage(messageText) {
 
     const newMessageObj = {
@@ -27,7 +32,7 @@ class App extends Component {
 
   componentDidMount() {
 
-    // Get new message form the server and push to the array state
+    // Get new message from the server and push to the array "messages" in the this.state
     const messages = this.state.messages;
 
     this.socket.onmessage = (event) => {
@@ -48,7 +53,9 @@ class App extends Component {
       <React.Fragment>
         <NavBar />
         <MessageList messages={this.state.messages}/>
-        <ChatBar user={this.state.currentUser} newMessage={this.addNewMessage.bind(this)}/>
+        <ChatBar username={this.state.currentUser.name} 
+        onUserNameChange={ this.changeUserName }
+        newMessage={this.addNewMessage.bind(this)}/>
       </React.Fragment>
     );
   }

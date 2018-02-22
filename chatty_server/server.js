@@ -34,8 +34,6 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     const msgObj = JSON.parse(message);
     const newMsg = {id: uuidv1(), username: msgObj.username, content:  msgObj.content}
-    /////// REMEMBER TO REMOVE ///////////
-    console.log(JSON.stringify(newMsg))///
     broadcast(JSON.stringify(newMsg));
   });
 

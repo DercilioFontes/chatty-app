@@ -4,6 +4,8 @@ class ChatBar extends Component {
   constructor(props) {
     super(props);
     this.state = { messageText: ''};
+    this.onMessageTextChange = this.onMessageTextChange.bind(this);
+    this.onMessageTextPressEnter = this.onMessageTextPressEnter.bind(this);
   }
 
   onMessageTextChange(event) {
@@ -17,18 +19,21 @@ class ChatBar extends Component {
     }
   }
   
-  render() {  
-    const name = this.props.user.name;
+  render() {
+
+    const { messageText } = this.state;
+    const { onUserNameChange, username } = this.props;
 
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" defaultValue={name} />
-        <input 
-          className="chatbar-message" 
+        <input className="chatbar-username" 
+        defaultValue={ username } 
+        onChange={ e => onUserNameChange(e.target.value) }/>
+        <input className="chatbar-message" 
           placeholder="Type a message and hit ENTER" 
-          value={this.state.messageText}
-          onChange={this.onMessageTextChange.bind(this)}
-          onKeyPress={this.onMessageTextPressEnter.bind(this)} />
+          value={ messageText }
+          onChange={ this.onMessageTextChange }
+          onKeyPress={ this.onMessageTextPressEnter } />
       </footer>
     );
   }
