@@ -22,7 +22,7 @@ class ChatBar extends Component {
 
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" defaultValue={name} disabled/>
+        <input className="chatbar-username" defaultValue={name} />
         <input 
           className="chatbar-message" 
           placeholder="Type a message and hit ENTER" 
