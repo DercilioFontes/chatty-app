@@ -7,12 +7,14 @@ class MessageList extends Component {
   render() {
     const messages = this.props.messages;
     const messagesList = messages.map((message) => {
+
       return (
         <Message 
           key={message.id}
           type={message.type}
           username={message.username}
           content={message.content}
+          userColor={message.userColor}
         />
       );
     });

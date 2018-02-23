@@ -18,7 +18,7 @@ class App extends Component {
     this.onUserNamePressEnter=this.onUserNamePressEnter.bind(this);
   }
 
-  // Get changes in the username input field and set to State
+  // Get changes in the username input field and set to the state
   changeUserName(name) {
     this.setState({currentUser: { name }});
   }
@@ -59,7 +59,7 @@ class App extends Component {
 
   componentDidMount() {
 
-    // Get new message from the server and push to the array "messages" of the State
+    // Get new message from the server and push to the array "messages" of the state
     const messages = this.state.messages;
 
     this.socket.onmessage = (event) => {
@@ -68,7 +68,7 @@ class App extends Component {
       switch(newMessageObj.type){ 
 
         case 'numberUsersConnectedNotification':
-          // Case a new message from socket server about user jointing or leaving the channel
+          // Case a new message from socket server about user jointing or leaving the channel and update the numberUsersConnected in the state
           // Change the message type to show as system's message
           newMessageObj.type = 'incomingNotification';
           messages.push(newMessageObj);
@@ -79,19 +79,19 @@ class App extends Component {
           break;
 
         case 'incomingMessage':
-        messages.push(newMessageObj);
+          messages.push(newMessageObj);
           this.setState({
             messages: messages
           });
           break;
 
         case 'incomingNotification':
-        messages.push(newMessageObj);
+          messages.push(newMessageObj);
           this.setState({
             messages: messages
           });
           break;
-          
+ 
         default:
           throw new Error('Unknown event type ' + newMessageObj.type);
       }
@@ -103,7 +103,7 @@ class App extends Component {
     return (
       <React.Fragment>
         <NavBar numberUsersConnected={this.state.numberUsersConnected}/>
-        <MessageList messages={this.state.messages}/>
+        <MessageList messages={this.state.messages} />
         <ChatBar username={this.state.currentUser.name} 
         onUserNameChange={ this.changeUserName }
         onUserNamePressEnter={this.onUserNamePressEnter}

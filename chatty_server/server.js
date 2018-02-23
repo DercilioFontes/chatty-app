@@ -18,29 +18,44 @@ const server =
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+// Random a color
+// Obs: System is 'black' (set when the  message is created)
+function getRandomColor() {
+  const hexadecinalDigits = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += hexadecinalDigits[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 // Function to broadcast message
-function broadcast(data) { 
+function broadcast(dataObj) { 
   for (const client of wss.clients) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
+      client.send(JSON.stringify(dataObj));
     }
   }
 }
 
- // Broadcast number of users connected
-function broadcastNumConnected(num, type) {
+ // Broadcast number of users connected and message
+function broadcastNumConnected(num, joinedOrLeft) {
   const msgNumUsers = {
     id: uuidV1(),
     username: 'System',
+    userColor: 'black',
     type: 'numberUsersConnectedNotification', 
     numberUsersConnected: num,
-    content: `A user ${type} the channel.`
+    content: `A user ${joinedOrLeft} the channel.`
   };
-  broadcast(JSON.stringify(msgNumUsers));
+  broadcast(msgNumUsers);
 }
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
+
+  // Send color to user after conextion
+  ws.color = getRandomColor();
 
   // Broadcast number of users connected when new one joints
   broadcastNumConnected(wss.clients.size, 'joined');
@@ -50,13 +65,16 @@ wss.on('connection', (ws) => {
     const msgObj = JSON.parse(message);
     let newMsg = '';
     switch (msgObj.type) {
+
       case 'postNotification':
-        newMsg = {id: uuidV1(), type: 'incomingNotification', username: 'System', content:  `${msgObj.oldUserName} changed their name to ${msgObj.newUserName}`}
-        broadcast(JSON.stringify(newMsg));
+        newMsg = {id: uuidV1(), type: 'incomingNotification', username: 'System', userColor: 'black', content: `${msgObj.oldUserName} changed their name to ${msgObj.newUserName}`}
+        broadcast(newMsg);
         break;
+
       default:
-        newMsg = {id: uuidV1(), type: 'incomingMessage', username: msgObj.username, content:  msgObj.content}
-        broadcast(JSON.stringify(newMsg));
+        // Get user color back here (ws.color)
+        newMsg = {id: uuidV1(), type: 'incomingMessage', username: msgObj.username, userColor: ws.color, content:  msgObj.content}
+        broadcast(newMsg);
       }
   });
 
@@ -68,4 +86,3 @@ wss.on('connection', (ws) => {
     broadcastNumConnected(wss.clients.size, 'left');
   });
 });
-
