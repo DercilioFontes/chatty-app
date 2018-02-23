@@ -24,11 +24,11 @@ class Message extends Component {
         indexEnd = content.indexOf('gif') + 3;
       }
       const url = content.substring(indexStart, indexEnd);
-      const spanStyle = {display: 'block'};
+      // const spanStyle = {display: 'block'};
       const imgStyle = { width: '60%' };
 
-      return (<div>
-                <span className="message-content" style={spanStyle}>{content}</span>
+      return (<div className="message-content" >
+                <span  >{content}</span>
                 <img src={url} style={imgStyle}/>
               </div>);
     } else {
