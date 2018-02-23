@@ -8,10 +8,12 @@ class ChatBar extends Component {
     this.onMessageTextPressEnter = this.onMessageTextPressEnter.bind(this);
   }
 
+  // Get changes in the message input
   onMessageTextChange(event) {
     this.setState({messageText: event.target.value});
   }
 
+  // Get Enter to addNewMessage in the App.jsx
   onMessageTextPressEnter(event) {
     if (event.key === 'Enter') {
       this.props.newMessage(this.state.messageText);
@@ -22,6 +24,7 @@ class ChatBar extends Component {
   render() {
 
     const { messageText } = this.state;
+    // Functions form the App.jsx to handle inputs
     const { onUserNameChange, onUserNamePressEnter, username } = this.props;
 
     return (

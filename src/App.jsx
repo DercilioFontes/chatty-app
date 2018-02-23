@@ -9,7 +9,7 @@ class App extends Component {
     super(props);
     this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
-      currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: 'Anonymous'}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [],
       numberUsersConnected: ''
     }
@@ -18,10 +18,12 @@ class App extends Component {
     this.onUserNamePressEnter=this.onUserNamePressEnter.bind(this);
   }
 
+  // Get changes in the username input field and set to State
   changeUserName(name) {
     this.setState({currentUser: { name }});
   }
 
+  // Send msg notification to the socket server after username have changed the name
   sendNotificationOfChangedUserName() {
     const newNotificationObj = {
       type: 'postNotification',
@@ -32,6 +34,7 @@ class App extends Component {
     this.socket.send(JSON.stringify(newNotificationObj));
   }
 
+  // Get the Enter key when the username change the name
   onUserNamePressEnter(event) {
     if (event.key === 'Enter') {
       this.sendNotificationOfChangedUserName();
@@ -41,7 +44,7 @@ class App extends Component {
   // Get new message from the Chart Bar and send to the Socket Server
   addNewMessage(messageText) {
 
-    // Check if also user have changed their name and send notification
+    // Check if also user have changed their name and send notification too
     if(this.oldUserName !== this.state.currentUser.name) {
       this.sendNotificationOfChangedUserName();
     }
@@ -56,15 +59,17 @@ class App extends Component {
 
   componentDidMount() {
 
-    // Get new message from the server and push to the array "messages" in the this.state
+    // Get new message from the server and push to the array "messages" of the State
     const messages = this.state.messages;
 
     this.socket.onmessage = (event) => {
       const newMessageObj = JSON.parse(event.data);
 
       switch(newMessageObj.type){ 
+
         case 'numberUsersConnectedNotification':
-          // Push a new message from socket server about current user jointing or leaving the channel
+          // Case a new message from socket server about user jointing or leaving the channel
+          // Change the message type to show as system's message
           newMessageObj.type = 'incomingNotification';
           messages.push(newMessageObj);
           this.setState({
@@ -72,18 +77,21 @@ class App extends Component {
             numberUsersConnected: newMessageObj.numberUsersConnected
           });
           break;
+
         case 'incomingMessage':
         messages.push(newMessageObj);
           this.setState({
             messages: messages
           });
           break;
+
         case 'incomingNotification':
         messages.push(newMessageObj);
           this.setState({
             messages: messages
           });
           break;
+          
         default:
           throw new Error('Unknown event type ' + newMessageObj.type);
       }

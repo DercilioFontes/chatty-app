@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 class Message extends Component {
 
+  // Render a message and check if is system or user message
   render() {
     return (
       <React.Fragment>
