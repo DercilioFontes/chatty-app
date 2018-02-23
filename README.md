@@ -5,8 +5,8 @@ Chatty App is a chat web SPA (Single Page Application), like Slack or WhatsApp, 
 
 ## Final Product
 
-![Showing a user view]()
-![Showing another user view]()
+![Showing a user view](https://raw.githubusercontent.com/DercilioFontes/chatty-app/master/docs/screenshot1.png)
+![Showing another user view](https://raw.githubusercontent.com/DercilioFontes/chatty-app/master/docs/screenshot2.png)
 
 ## Dependencies
 
