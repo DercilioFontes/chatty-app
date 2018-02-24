@@ -24,7 +24,6 @@ class Message extends Component {
         indexEnd = content.indexOf('gif') + 3;
       }
       const url = content.substring(indexStart, indexEnd);
-      // const spanStyle = {display: 'block'};
       const imgStyle = { width: '60%' };
 
       return (<div className="message-content" >
