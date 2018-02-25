@@ -2,7 +2,7 @@
 
 ## Lighthouse Labs (Vancouver - BC)
 
-Chatty App is a chat web SPA (Single Page Application), like Slack or WhatsApp, built with ReactJS, Babel and WebPack that communicates with a server via WebSocekts (using Node package ws on the server-side, and native WebSocket on client side) for multi-user real-time updates.
+Chatty App is a chat web SPA (Single Page Application), like Slack or WhatsApp, built with ReactJS, Babel and WebPack that communicates with a server via WebSockets (using Node package ws on the server-side, and native WebSocket on the client side) for multi-user real-time updates.
 
 ## Final Product
 
